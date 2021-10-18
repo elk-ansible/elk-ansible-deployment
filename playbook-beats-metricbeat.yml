@@ -1,0 +1,46 @@
+- hosts: 
+  - es-nodes
+  roles:
+    - role: ansible-beats
+  vars:
+    beats_version:  "{{ es_version}}"
+    node_name: "{{hostvars[inventory_hostname].node_name}}"
+    es_host:   "{{ ansible_eth0.ipv4.address }}"
+    remote_monitoring_pass: "{{remote_monitoring_user_pass}}"
+    es_output_pass: "{{beats_mon_user_pass}}"
+    enable_keystore: true
+    es_enable_sll: true
+    es_ssl_upload: true
+    es_output_ssl_ca: "files/certs/es-output.ca"
+    es_mon_ssl_ca: "files/certs/es-mon.ca"
+    beat: metricbeat
+    beat_conf:
+      fields:
+        env: mon
+        node_name: "{{node_name}}"
+        host: "{{es_host}}"
+        cluster: "{{cluster_name}}"
+      name: "{{cluster_name}}-{{node_name}}"
+      tags: ["elk", "es-node","metrics"]
+      metricbeat.modules:
+        - module: elasticsearch
+          xpack.enabled: true
+          period: 10s
+          hosts:
+            - "https://{{es_host}}:9200"
+          username: remote_monitoring_user
+          password: "${REMOTE_MONITORING_PASS}"
+          ssl.verification_mode: certificate
+          ssl.certificate_authorities: "{{es_ssl_certificate_path}}/{{es_mon_ssl_ca |basename}}"
+
+    output_conf:
+        elasticsearch:
+          hosts: "{{elasticsearch_mon_host}}"
+          protocol: "https"
+          username: "beats_user"
+          password: "${ES_OUTPUT_PASS}"
+          ssl.verification_mode: certificate
+          ssl.certificate_authorities: "{{es_ssl_certificate_path}}/{{es_output_ssl_ca |basename}}"
+          loadbalance: true
+          worker: 2
+

@@ -1,0 +1,22 @@
+- hosts:  es-nodes
+  tasks:
+    - ansible.builtin.service:
+        name: metricbeat.service
+        state: stopped
+      become: true  
+    - yum:
+        name: metricbeat
+        state: absent
+      become: true
+    - ansible.builtin.systemd:
+        daemon_reexec: yes
+      become: true  
+    - file:
+        path: "{{item}}"
+        state: absent
+      with_items:
+        - /etc/metricbeat
+        - /usr/share/metricbeat
+        - /var/lib/metricbeat
+      become: true
+    

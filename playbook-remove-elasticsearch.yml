@@ -1,0 +1,19 @@
+- hosts:
+   - es-nodes
+  tasks:
+    - yum:
+        name: elasticsearch
+        state: absent
+      become: true
+    - ansible.builtin.systemd:
+        daemon_reexec: yes
+      become: true
+    - file:
+        path: "{{item}}"
+        state: absent
+      with_items:
+        - /etc/elasticsearch
+        - /usr/share/elasticsearch
+        - /var/lib/elasticsearch
+        - /opt/data/nodes/
+      become: true
