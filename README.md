@@ -168,7 +168,7 @@ curl -X PATCH https://api.godaddy.com/v1/domains/sciviz.co/records \
 ```
 
 
-##### Finaly Let's Install our 3 node elasticsearch cluster
+##### Finally Let's Install our 3 node elasticsearch cluster
 ```shell
  ansible-playbook -i inventory-elk/ playbook-elasticsearch-cluster.yml
 ```

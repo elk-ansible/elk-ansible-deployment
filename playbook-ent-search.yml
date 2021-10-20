@@ -1,0 +1,35 @@
+- name: Install and Configure Elastic Enterprise-search
+  hosts: ent-search-node
+  roles:
+    - role: ansible-ent-search
+  vars:
+    es_host: "{{hostvars[inventory_hostname].es_host}}"
+    es_ent_search_user: "{{hostvars[inventory_hostname].es_ent_search_user}}"
+    es_ent_search_pass: "{{hostvars[inventory_hostname].es_ent_search_pass}}"
+    es_version: 7.15.1
+    es_use_repository: false
+    es_ssl_enabled: true
+# Use CA file for ES server
+#    es_ssl_ca: "files/certs/{{hostvars[inventory_hostname].es_ssl_ca_filename}}"
+# Alternatively use ssl cert and key
+    es_ssl_certificate: "files/certs/{{hostvars[inventory_hostname].es_ssl_cert_filename}}"
+    es_ssl_key:  "files/certs/{{hostvars[inventory_hostname].es_ssl_key_filename}}"
+    #es_ssl_key_password: "{{hostvars[inventory_hostname].es_ssl_key_pass}}"
+    es_ssl_verify: "true"
+    #Host and URL
+    ent_search_listen_host: "{{ ansible_default_ipv4.address }}"
+    #    ent_search_listen_host: "{{hostvars[inventory_hostname].listen_host}}"
+    ent_search_listen_port: "{{hostvars[inventory_hostname].es_ent_search_listen_port}}"
+    ent_search_external_url: "{{hostvars[inventory_hostname].es_ent_search_external_url}}"
+    #SSL
+    ent_search_ssl_enabled: true
+    ent_search_ssl_keystore: "files/certs/{{hostvars[inventory_hostname].keystore_filename}}"
+    ent_search_ssl_keystore_password: "{{hostvars[inventory_hostname].keystore_pass}}"
+    ent_search_ssl_keystore_key_password:  "{{hostvars[inventory_hostname].keystore_key_pass}}"
+
+
+#    - role: lean_delivery.java
+#      java_major_version: 11
+#      java_tarball_install: true
+#      transport: web
+#      transport_web: https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
