@@ -1,0 +1,17 @@
+- hosts:  kibana-node
+  tasks:
+    - yum:
+        name: kibana
+        state: absent
+      become: true
+    - ansible.builtin.systemd:
+        daemon_reexec: yes
+      become: true
+    - file:
+        path: "{{item}}"
+        state: absent
+      with_items:
+        - /etc/kibana
+        - /usr/share/kibana
+        - /var/lib/kibana
+      become: true

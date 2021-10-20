@@ -26,18 +26,26 @@ aws ec2 describe-instances \
 This would output the 3 node entries for our `.ssh/config`  fille
 ```shell
 Host tf-elk-es02
-HostName 35.111.22.243
-Host tf-elk-es01
-HostName 34.aa.bb.0
+HostName 35.160.70.231
 Host tf-elk-es03
-HostName 34.xx.yy.10
+HostName 52.43.33.179
+Host tf-elk-es01
+HostName 34.216.82.135
 ```
 #### Get the Ansible role for Elasticsearch 
 We will be checking out the code for the roles instead of using Ansible galaxy  
- 
+
 ```shell
-cd Ansible/roles
+mkdir roles
+cd roles
+```
+
+
+
+```shell
+mkdir roles && cd roles
 git clone https://github.com/elastic/ansible-elasticsearch
+cd ansible-elasticsearch/
 git checkout tags/v7.15.1
 
 ```
@@ -76,28 +84,34 @@ acme.sh --issue --dns dns_gd -d kibana.sciviz.co -d es2-sb.dfh.ai -d es3-sb.dfh.
 [Tue Feb  2 07:42:03 PM CST 2021] Your cert key is in  /home/user/.acme.sh/kibana.sciviz.co/kibana.sciviz.co.key 
 [Tue Feb  2 07:42:03 PM CST 2021] The intermediate CA cert is in  /home/user/.acme.sh/kibana.sciviz.co/ca.cer 
 [Tue Feb  2 07:42:03 PM CST 2021] And the full chain certs is there:  /home/user/.acme.sh/kibana.sciviz.co/fullchain.cer 
-[user@localhost AWS]$ 
+ 
 ```
+Similarly if your DNS is managed by AWS 
+```shell
 
-
-
+export  AWS_ACCESS_KEY_ID=AKxxxx
+export  AWS_SECRET_ACCESS_KEY=gKyyyy
+acme.sh --issue --dns dns_aws -d kibana.sciviz.co -d es01.sciviz.co -d es02.sciviz.co -d es03.sciviz.co
+```
+[letsencrypt + route53](https://gist.github.com/nelsonenzo/35a95107cee1a57e7ac4178c526b1b00)
 ### Generate the PKCS12 (p12, aka pfx) file 
 Go to the folder where the certificates were generated with `acme.sh`
 ```shell
-$ openssl pkcs12 -export  -inkey kibana.sciviz.co.key  -in kibana.sciviz.co.cer -certfile fullchain.cer -out es-sb.dfh.ai.p12 
-Enter Export Password:
-Verifying - Enter Export Password:
-
-export  SSL_DOMAIN=kibana.sciviz.co
-export SSL_PASS=changme
-openssl pkcs12 -export \
- -inkey ${SSL_DOMAIN}.key \
- -in ${SSL_DOMAIN}.cer \
- -certfile fullchain.cer -out ${SSL_DOMAIN}.pfx \
-  env:$SSL_PASS
-[user@localhost kibana.sciviz.co]$ 
+openssl pkcs12 -export  -inkey kibana.sciviz.co.key  -in kibana.sciviz.co.cer -certfile fullchain.cer -out kibana.sciviz.co.p12 
 ```
 
+```shell
+export  SSL_DOMAIN=kibana.sciviz.co
+export SSL_PASS=changeme
+openssl pkcs12 -export \
+-inkey ${SSL_DOMAIN}.key \
+-in ${SSL_DOMAIN}.cer \
+ -certfile fullchain.cer  \
+-out ${SSL_DOMAIN}.pfx   \
+-password env:SSL_PASS
+ 
+```
+[https://www.openssl.org/docs/man1.1.0/man1/openssl.html#Pass-Phrase-Options](https://www.openssl.org/docs/man1.1.0/man1/openssl.html#Pass-Phrase-Options)
             
 
 ### GoDaddy DNS Change
