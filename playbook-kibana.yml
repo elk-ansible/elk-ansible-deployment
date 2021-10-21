@@ -20,7 +20,7 @@
 #    server_ssl_key: "files/certs/server/server.key"
 #    server_ssl_key_passphrase: elastic
     secure_settings: true
-    es_pass:  "{{hostvars[inventory_hostname].kibana_pass}}"
+    es_pass:  "{{hostvars[inventory_hostname].kibana_system_pass}}"
     server_ssl_keystore: "files/certs/{{hostvars[inventory_hostname].cert_file}}"
     server_ssl_keystore_password:  "{{hostvars[inventory_hostname].cert_pass}}"
     kibana_config:

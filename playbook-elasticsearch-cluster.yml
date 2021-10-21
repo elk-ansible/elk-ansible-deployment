@@ -40,10 +40,32 @@
       - plugin: ingest-attachment
       - plugin: mapper-murmur3
       - plugin: repository-s3
+    es_roles:
+        native:
+          logstash_writer:
+            cluster:
+              - "manage_index_templates"
+              - "monitor"
+              - "manage_ilm"
+            indices:
+              - names: "logstash-*"
+                privileges:
+                  - all
+          beats_agent:
+            cluster:
+              - "read_ilm"
+              - "monitor"
+              - "manage_ilm"
+              - "manage_ingest_pipelines"
+              - "manage_index_templates"
+            indices:
+              - names:  ["filebeat-*","metricbeat-*",".monitoring*"]
+                privileges:
+                  - all
     es_users:
         native:
           kibana_system:
-            password: "{{hostvars[inventory_hostname].kibana_pass}}"
+            password: "{{hostvars[inventory_hostname].kibana_system_pass}}"
           logstash_system:
             password: "{{hostvars[inventory_hostname].logstash_system_pass}}"
           beats_system:

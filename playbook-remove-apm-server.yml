@@ -1,0 +1,21 @@
+- hosts:  apm-server
+  tasks:
+    - service:
+        name: apm-server.service
+        state: stopped
+      become: true
+    - yum:
+        name: apm-server
+        state: absent
+      become: true
+    - ansible.builtin.systemd:
+        daemon_reexec: yes
+      become: true
+    - file:
+        path: "{{item}}"
+        state: absent
+      with_items:
+        - /etc/apm-server
+        - /usr/share/apm-server
+        - /var/lib/apm-server
+      become: true

@@ -1,0 +1,75 @@
+- hosts:
+  - es-nodes
+  - kibana-node
+  roles:
+    - role: ansible-beats
+  vars:
+    beats_version:   "{{ es_version}}"
+    node_name: "{{hostvars[inventory_hostname].node_name}}"
+    es_host: "{{ ansible_eth0.ipv4.address }}"
+    remote_monitoring_pass: "{{remote_monitoring_user_pass}}"
+    es_output_pass: "{{beats_mon_user_pass}}"
+    enable_keystore: true
+    es_enable_ssl: true
+    es_ssl_upload: true
+    es_output_ssl_ca: "files/certs/ca.cer"
+    es_mon_ssl_ca: "files/certs/ca.cer"
+    beat: filebeat
+    beat_conf:
+      fields:
+        env: dev
+        node_name: "{{node_name}}"
+        host: "{{es_host}}"
+        cluster: "{{cluster_name}}"
+      name: "{{cluster_name}}-{{node_name}}"
+      tags: ["elk", "es-node"]
+      filebeat.inputs:
+          - type: log
+            enabled: true
+            paths:
+              - /var/log/*.log
+      filebeat.modules:
+        - module: nginx
+        - module: kibana
+          log:
+            enabled: true
+            var.paths:
+              - "/var/log/kibana/*.log"
+        - module: elasticsearch
+          server:
+            enabled: true
+            var.paths:
+              - "/var/log/elasticsearch/*.log"
+              - "/var/log/elasticsearch/*_server.json"
+          gc:
+            enabled: true
+            var.paths:
+              - "/var/log/elasticsearch/gc.log"
+              - "/var/log/elasticsearch/gc.log.[0-9]*"
+          audit:
+            enabled: true
+            var.paths:
+              - "/var/log/elasticsearch/*_access.log"
+              - "/var/log/elasticsearch/*_audit.log"
+              - "/var/log/elasticsearch/*_audit.json"
+          deprecation:
+            enabled: true
+            var.paths:
+              - "/var/log/elasticsearch/*_deprecation.log"
+              - "/var/log/elasticsearch/*_deprecation.json"
+          slowlog:
+            enabled: true
+            var.paths:
+              - "/var/log/elasticsearch/*_slowlog.log"
+              - "/var/log/elasticsearch/*_slowlog.json"
+    output_conf:
+        elasticsearch:
+          hosts: "{{elasticsearch_mon_hosts}}"
+          protocol: "https"
+          username: "beats_user"
+          password: "${ES_OUTPUT_PASS}"
+          ssl.verification_mode: certificate
+          ssl.certificate_authorities: "{{es_ssl_certificate_path}}/{{es_output_ssl_ca |basename}}"
+          loadbalance: true
+          worker: 2
+

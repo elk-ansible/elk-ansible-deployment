@@ -1,5 +1,5 @@
 - hosts: 
-  - es-nodes
+  - kibana-node
   roles:
     - role: ansible-beats
   vars:
@@ -23,7 +23,7 @@
       name: "{{cluster_name}}-{{node_name}}"
       tags: ["elk", "es-node","metrics"]
       metricbeat.modules:
-        - module: elasticsearch
+        - module: kibana
           xpack.enabled: true
           period: 10s
           hosts:

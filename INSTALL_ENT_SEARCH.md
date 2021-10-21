@@ -1,5 +1,9 @@
 ### App-search/Enterprise Search configuration
+Some AWS instances do not have java installed by default. One way to install java is via the userdata script 
+```shell
+sudo amazon-linux-extras install -y  java-openjdk11
 
+```
 Generate dedicated certificates for our Enterprise Search, APM server and logstash hosts
 ```shell
 acme.sh --issue --dns dns_aws -d ent-search.sciviz.co -d apm-server.sciviz.co -d logstash.sciviz.co

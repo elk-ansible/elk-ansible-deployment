@@ -1,0 +1,23 @@
+- name: Install and Configure Elastic APM Server
+  hosts: apm-server
+  roles:
+  - role: apm-server
+    vars:
+        es_enable_keystore: true
+        apm_server_host: "{{ansible_default_ipv4.address}}"
+        apm_kibana_host: "kibana.sciviz.co"
+        apm_kibana_user: kibana_system
+        apm_kibana_pass: "{{kibana_system_pass}}"
+        es_output_ssl_ca: "files/certs/ca.cer"
+        es_output_hosts: "{{elasticsearch_mon_hosts}}"
+        es_output_user: "{{es_apm_serv_user}}"
+        es_output_pass: "{{es_apm_serv_pass}}"
+        es_version: "{{hostvars[inventory_hostname].es_version}}"
+        es_mon_host: "{{elasticsearch_mon_hosts}}"
+        es_mon_user: apm_system
+        es_mon_pass: "{{apm_system_pass}}"
+        apm_ssl_enabled: true
+#        apm_ssl_key_pass: false
+        apm_ssl_key:  "files/certs/{{apm_ssl_key_filename}}"
+        apm_ssl_cert: "files/certs/{{apm_ssl_cert_filename}}"
+
