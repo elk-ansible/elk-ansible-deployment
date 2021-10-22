@@ -31,7 +31,7 @@ their respective Ansible inventory variables.
 Physically we will be using the same elasticsearch cluster. 
 
 
-![Image ELK](./img/AWS-Components-ELK Stack.png)
+![Image ELK](./img/AWS-Components-ELK-Stack.png)
 #### Detailed Step-by-Step Guides 
 1. Run terraform to provision the infrastructure is described in a separate repository [https://github.com/mirkenstein/elk-ec2-terraform-aws](https://github.com/mirkenstein/elk-ec2-terraform-aws)
 2. Preparatory steps
