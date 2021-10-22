@@ -22,3 +22,11 @@ git checkout tags/v7.15.1
 ```
 Visit your domain.
 [https://es01.sciviz.co:9200/_cat/nodes](https://es01.sciviz.co:9200/_cat/nodes)
+
+List of cluster node, Single Nodes information and Valid SSL certificate
+
+![Image ELK](./img/es_clusrer_deployment_validation.png)
+
+![Image ELK](./img/es_clusrer_deployment_validation_node.png)
+
+![Image ELK](./img/es_clusrer_deployment_validation_cert.png)
