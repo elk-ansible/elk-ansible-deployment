@@ -29,6 +29,7 @@
         server.host: "{{ ansible_default_ipv4.address }}"
         server.publicBaseUrl: "{{hostvars[inventory_hostname].kibana_srv_public_url}}"
         elasticsearch.hosts:  "[\"https://{{hostvars[inventory_hostname].es_host}}:9200\"]"
+        monitoring.kibana.collection.enabled: false
 #        elasticsearch.hosts:  "https://{{ ansible_default_ipv4.address }}:9200"
 #        elasticsearch.hosts:  "[\"https://10.127.44.11:9200\",\"https://10.127.44.22:9200\",\"https://10.127.44.33:9200\"]"
 #        xpack.security.audit.enabled: true

@@ -24,7 +24,7 @@ Copy the pfx file to the ansible deployment folder `./files/certs`
 ```shell
 cd role
 git clone https://github.com/mirkenstein/ansible-role-elastic-enterprise-search.git
-ln -s ansible-ent-search
+ln -s  ansible-role-elastic-enterprise-search/ ansible-ent-search
 ```
 In the current playbook the variables for the certificates to connect to elastic are the same as the ones we used for the kibana installation.
 Run the playbook

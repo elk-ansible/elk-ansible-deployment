@@ -27,7 +27,7 @@
           xpack.enabled: true
           period: 10s
           hosts:
-            - "https://{{es_host}}:9200"
+            - "https://{{es_host}}:5601"
           username: remote_monitoring_user
           password: "${REMOTE_MONITORING_PASS}"
           ssl.verification_mode: certificate
