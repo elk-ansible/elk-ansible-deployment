@@ -4,8 +4,8 @@ This is a complete end-to-end tutorial demonstrating deployment all the ELK stac
 
 It is 3 steps 
 1. `terraform apply` for the infrastructure deployment. 
-2. `acme.sh` certbot from Let's Encrypt for our certificates and `openssl` to generate our PKCS12 files. 
-3.  `ansible-playbook -i inventoty-elk/ playbooke-{service-name}.yml` in order to install and configure.
+2. `acme.sh` certbot from Let's Encrypt for our  certificates and `openssl` to generate our PKCS12 files. 
+3. `ansible-playbook -i inventoty-elk/ playbooke-{service-name}.yml` in order to install and configure.
 
 
 #### AWS Infrastructure Overview 

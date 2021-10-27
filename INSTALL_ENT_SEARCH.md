@@ -32,6 +32,7 @@ Run the playbook
 ansible-playbook -i inventory-elk/ playbook-ent-search.yml 
 ```
 
+
 #### Debugging the installation.
 SSH to the host where enterprise search is installed and look at the logfiles `/var/log/messages` and `/var/log/enterprise-search/app-server.log`
 
@@ -39,3 +40,9 @@ It takes some time (couple of minutes ) for the enterprise search to start after
 Check the status in the main log file
 `/var/log/enterprise-search/app-server.log`
 If this one is empty or does not give you much information on the current issue then look at `/var/log/enterprise-search/app-server.log`
+
+#### Note for version 7.15.1
+Need to restart the server in order to address the issue with 
+```
+enterprise-search: Please set `JAVA_OPTS='-Dsun.jnu.encoding=UTF-8 -Dfile.encoding=UTF-8'`
+```

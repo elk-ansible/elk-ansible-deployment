@@ -1,0 +1,18 @@
+- name: Example play
+  hosts: all
+  gather_facts: no  # gather facts AFTER the host key has been accepted instead
+
+  tasks:
+
+  # https://stackoverflow.com/questions/32297456/
+  - name: Accept EC2 SSH host keys
+    connection: local
+    become: false
+    shell: |
+      ssh-keygen -F {{ ansible_default_ipv4.address }} ||
+        ssh-keyscan -H {{ ansible_default_ipv4.address }} >> ~/.ssh/known_hosts
+    register: known_hosts_script
+    changed_when: "'found' not in known_hosts_script.stdout"
+
+  - name: Gathering Facts
+    setup:

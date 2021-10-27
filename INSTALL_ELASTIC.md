@@ -18,7 +18,8 @@ git checkout tags/v7.15.1
 
 #####  Install our 3 node elasticsearch cluster
 ```shell
- ansible-playbook -i inventory-elk/ playbook-elasticsearch-cluster.yml
+export ANSIBLE_HOST_KEY_CHECKING=False
+ansible-playbook -i inventory-elk/ playbook-elasticsearch-cluster.yml
 ```
 Visit your domain.
 [https://es01.sciviz.co:9200/_cat/nodes](https://es01.sciviz.co:9200/_cat/nodes)

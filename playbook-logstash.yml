@@ -1,0 +1,85 @@
+- name: Install and Configure Logstash
+  hosts: logstash-node
+  vars:
+    solr_change_default_password: False
+  roles:
+#    - role: lean_delivery.logstash
+#    - role: lean_delivery.java
+#      transport: repositories
+#      java_major_version: 8
+    - role: ansible-logstash
+  vars:
+    ls_enable_keystore: True
+    ls_enable_ssl: False
+    ls_keystore_pass: "{{hostvars[inventory_hostname].logstash_keystore_pass}}"
+    elasticsearch_index_name: logstash-apache-type
+    elasticsearch_host: "{{ ansible_default_ipv4.address }}"
+    #elasticsearch_host: "{{hostvars[inventory_hostname].elasticsearch_host}}"
+    elastic_branch: 7
+    es_version: "{{hostvars[inventory_hostname].es_version}}"
+#    es_package_dir: "{{hostvars[inventory_hostname].es_package_dir}}"
+    es_use_repository: True
+    ls_custom_config_path: "files/ls_config"
+    ls_custom_filters_files: "[]"
+    ls_custom_files: "[]"
+#      - "snowflake-jdbc-3.12.17.jar"
+#      - "joined.sql"
+#    ls_input_jdbc_user: "{{logstash_input_jdbc_user}}"
+#    ls_input_jdbc_pass: "{{logstash_input_jdbc_pass}}"
+#    jdbc_param_start_date: "{{hostvars[inventory_hostname].start_date}}"
+#    jdbc_param_end_date: "{{hostvars[inventory_hostname].end_date}}"
+    ls_add_custom_files: False
+    ls_local_custom_files: False
+    ls_custom_files_path: "files/ls_files"
+#    logstash_custom_package_url: "{{es_package_dir}}/logstash-{{es_version}}-x86_64.rpm"
+    ls_xms: "{{hostvars[inventory_hostname].heap_size}}"
+    ls_xmx: "{{hostvars[inventory_hostname].heap_size}}"
+    ls_plugins:
+      - logstash-input-beats
+      - logstash-filter-multiline
+      - logstash-input-s3
+      - logstash-output-elastic_app_search
+    ls_es_secure: True
+    ls_es_user: "{{logstash_internal_user}}"
+    ls_es_pass: "{{logstash_internal_pass}}"
+    ls_system_pass: "{{logstash_system_pass}}"
+    ls_system_mon_pass: "{{logstash_system_mon_pass}}"
+    ls_enable_mon: "{{logstash_enable_monitoring}}"
+#    elasticsearch_mon_host: "{{elasticsearch_mon_hosts}}"
+    es_ssl: false
+    es_mon_ssl: True
+    es_local_mon_certs: True
+    es_local_mon_ssl_cacert: "files/certs/{{es_local_mon_ssl_cacert_filename}}"
+    elasticsearch_output_host: "es01.sciviz.co"
+    elasticsearch_mon_host: "es01.sciviz.co"
+    es_ssl_verification: "true"
+    es_pki: True
+    es_local_ssl_cacert: false
+#    cert_filename: "{{hostvars[inventory_hostname].cert_file}}"
+#    cert_file: "{{hostvars[inventory_hostname].cert_file}}"
+    es_keystore_filename: "{{hostvars[inventory_hostname].cert_filename}}"
+    es_local_keystore: "files/certs/{{es_keystore_filename}}"
+    es_keystore_pass: "{{hostvars[inventory_hostname].cert_pass}}"
+    es_truststore_filename:  "{{hostvars[inventory_hostname].cert_filename}}"
+    es_local_truststore: "files/certs/{{es_truststore_filename}}"
+    es_truststore_pass: "{{hostvars[inventory_hostname].cert_pass}}"
+    ls_config:
+      dead_letter_queue.enable: false
+      node.name: "{{node_name}}"
+      pipeline.id: "{{node_name}}"
+      http.host: "{{ elasticsearch_host }}"
+      #      path.dead_letter_queue: "/opt/dead-queue"
+#      pipeline.workers: 4
+#      pipeline.output.workers: 4
+      queue.type: memory
+      #      queue.page_capacity: 100mb
+      #queue.max_bytes: 10gb
+      #path.queue: "/opt/logstash-queue"
+# App-search pipeline vars
+#    app_search_s3_source:  "{{hostvars[inventory_hostname].app_search_s3_source}}"
+#    app_search_url: "{{hostvars[inventory_hostname].app_search_url}}"
+#    app_search_engine:  "{{hostvars[inventory_hostname].app_search_engine}}"
+#    app_search_key: "{{hostvars[inventory_hostname].app_search_key}}"
+# ALB ALB S3 Logs pipeline vars
+#    aws_alb_logs_s3_source: "{{hostvars[inventory_hostname].aws_alb_logs_s3_source}}"
+#    elasticsearch_aws_alb_logs_index: "logstash-alb-logs-%{+yyyy-MM}"

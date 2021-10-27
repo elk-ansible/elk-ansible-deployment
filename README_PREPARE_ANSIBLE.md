@@ -30,6 +30,12 @@ HostName 52.43.33.179
 Host tf-elk-es01
 HostName 34.216.82.135
 ```
+Additionally add to your `.ssh/config`
+```shell
+Host tf-*
+IdentityFile ~/.ssh/<your_aws_ssh_key>
+
+```
 
 #### Ansible Inventory
 Consists of hosts and varialbes file
@@ -70,6 +76,11 @@ logstash_internal_user=logstash_internal
 logstash_internal_pass=changeme
 ...
 
+```
+
+#### Disable SSH Host key checking
+```shell
+export ANSIBLE_HOST_KEY_CHECKING=False
 ```
 
 Test Ansible Inventory 
