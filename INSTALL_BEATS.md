@@ -31,3 +31,7 @@ Disable Self Monitoring
 ![Step4](./img/metricbeat-kibana-setup-step4.png)
 
 Exit Setup Mode red button at the bottom left
+
+
+Similarly  for Filebeat in the Kibana->Setting->Monitoring we would see some the logs 
+![filebeat](./img/filebeat-log-validation.png)

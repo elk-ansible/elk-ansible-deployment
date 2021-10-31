@@ -16,6 +16,13 @@ ns-999.awsdns-59.net.
 ns-1234.awsdns-55.co.uk.
 ns-123.awsdns-22.org.
 ```
+
+You can obtain the nameservers via the AWS CLI by running
+```shell
+aws route53  list-hosted-zones
+aws route53  get-hosted-zone --id Z0216218BVXFGLMIL118
+```
+
 We use the GoDaddy API for the custom DNS Nameserver update.
 ```shell
 

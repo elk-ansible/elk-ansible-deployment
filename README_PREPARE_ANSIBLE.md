@@ -5,7 +5,9 @@ For Windows OS use the Docker images from [WillHallOnline](https://www.willhallo
 
 Ansible for Windows
 ```shell
-PS C:\Users\user\Ansible> docker run --rm -it -v C:\Users\user\Ansible:/ansible  -v C:\Users\user\.ssh:/root/.ssh willhallonline/ansible:2.9-centos-7 /bin/sh
+PS C:\Users\user\Ansible> 
+
+docker run --rm -it -v C:\Users\mnm\Ansible:/ansible  -v C:\Users\mnm\.ssh:/root/.ssh willhallonline/ansible:2.9-centos-7 /bin/sh
 sh-4.2# 
 ```
 

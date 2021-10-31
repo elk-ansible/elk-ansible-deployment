@@ -6,6 +6,11 @@ cd roles
 git clone https://github.com/fedelemantuano/ansible-kibana.git
 
 ```
+
+```shell
+ansible-playbook -i inventory-elk/ playbook-kibana.yml
+```
+#### Notes on the Kibana playbook
 For connecting to Elasticsearch we will use  `elasticsearch.ssl.certificate:` and `elasticsearch.ssl.key:`
 which are already generated from the  certbot `acme.sh` script in the previous step.
 
