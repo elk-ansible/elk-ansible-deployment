@@ -1,0 +1,41 @@
+- hosts: 
+  - logstash-node
+  roles:
+    - role: ansible-beats
+  vars:
+    beats_version:  "{{ es_version}}"
+    node_name: "{{hostvars[inventory_hostname].node_name}}"
+    es_host:   "{{ ansible_eth0.ipv4.address }}"
+    remote_monitoring_pass: "{{remote_monitoring_user_pass}}"
+    es_output_pass: "{{beats_mon_user_pass}}"
+    enable_keystore: true
+    es_enable_ssl: true
+    es_ssl_upload: true
+    es_output_ssl_ca: "files/certs/ca.cer"
+    es_mon_ssl_ca: "files/certs/ca.cer"
+    beat: metricbeat
+    beat_conf:
+      fields:
+        env: mon
+        node_name: "{{node_name}}"
+        host: "{{es_host}}"
+        cluster: "{{cluster_name}}"
+      name: "{{cluster_name}}-{{node_name}}"
+      tags: ["elk", "ls-node","metrics"]
+      metricbeat.modules:
+        - module: logstash
+          xpack.enabled: true
+          period: 10s
+          hosts:
+            - "{{es_host}}:9600"
+    output_conf:
+        elasticsearch:
+          hosts: "{{elasticsearch_mon_hosts}}"
+          protocol: "https"
+          username: "beats_user"
+          password: "${ES_OUTPUT_PASS}"
+          ssl.verification_mode: none
+          ssl.certificate_authorities: "{{es_ssl_certificate_path}}/{{es_output_ssl_ca |basename}}"
+          loadbalance: true
+          worker: 2
+

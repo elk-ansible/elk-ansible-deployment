@@ -21,7 +21,7 @@ aws ec2 describe-instances \
 --query 'Reservations[*].Instances[*].{ PublicIpAddress:PublicIpAddress,Name:Tags[?Key==`Name`]|[0].Value }'  \
 --region us-west-2 \
 --output text \
---profile hgs |awk '{print "Host "tolower($1)"\nHostName "$2}'
+--profile awsprofile |awk '{print "Host "tolower($1)"\nHostName "$2}'
 ```            
 This would output the 3 node entries for our `.ssh/config`  fille
 ```shell

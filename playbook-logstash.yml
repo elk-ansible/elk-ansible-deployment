@@ -14,7 +14,8 @@
     ls_keystore_pass: "{{hostvars[inventory_hostname].logstash_keystore_pass}}"
     elasticsearch_index_name: logstash-apache-type
 #    elasticsearch_host: "{{ ansible_default_ipv4.address }}"
-    elasticsearch_host: "{{hostvars[inventory_hostname].elasticsearch_output_host}}"
+#    elasticsearch_host: "{{hostvars[inventory_hostname].elasticsearch_output_host}}"
+    elasticsearch_host: "es01.sciviz.co"
     elastic_branch: 7
     es_version: "{{hostvars[inventory_hostname].es_version}}"
 #    es_package_dir: "{{hostvars[inventory_hostname].es_package_dir}}"
